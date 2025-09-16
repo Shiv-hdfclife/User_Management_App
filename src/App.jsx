@@ -1,33 +1,40 @@
-import { useState } from 'react'
+import { useEffect, useLayoutEffect, useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
+import UserList from './components/UserList'
+import AddUserForm from './components/AddUserForm'
+import EditUserForm from './components/EditUserForm'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const data = [
+    { id: 1, name: "Alice", role: "Admin" },
+    { id: 2, name: "Bob", role: "Editor" }
+  ]
+
+  const [userList, setUserList] = useState(data);
+
+  function handleForm(user) {
+
+    console.log("the user :", user)
+
+    let newUser = { id: userList.length + 1, ...user }
+    console.log("the newUsrL:", newUser)
+    // console.log("The list:", userList);
+    setUserList((userList) => [...userList, newUser])
+  }
+
+  useEffect(() => {
+    console.log("The list:", userList);
+  }, [userList])
+
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <div className='text-black text-center p-10 '>User Managment App</div>
+      <UserList data={userList} />
+      <AddUserForm onSubmit={handleForm} />
+      <EditUserForm />
     </>
   )
 }
