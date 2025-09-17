@@ -1,7 +1,22 @@
-export default function EditUserForm({ id }) {
+import { useState } from "react";
 
-    console.log("the id:", id)
+export default function EditUserForm({ id, onSubmit }) {
+    const [name, setName] = useState("");
+    const [role, setRole] = useState("");
+    const onValSubmit = (e) => {
+        e.preventDefault();
+        onSubmit({ id: id, name: name, role: role })
+        setName("");
+        setRole("");
+    }
     return (
-        <div></div>
+        <>
+            <div className="text-center">Edit the user info</div>
+            <form className="p-4 border-2 m-20 flex flex-col items-center justify-center" action="submit" onSubmit={onValSubmit}>Input of the form <br />
+                <input className="p-2 ml-2 border-none" type="text" placeholder="name" value={name} onChange={(e) => { setName(e.target.value) }} />
+                <input className="p-2 ml-2 border-none" type="text" placeholder="role" value={role} onChange={(e) => { setRole(e.target.value) }} />
+                <button className="border p-4 bg-gray" >Submit</button>
+            </form>
+        </>
     )
 }

@@ -11,7 +11,8 @@ function App() {
     { id: 1, name: "Alice", role: "Admin" },
     { id: 2, name: "Bob", role: "Editor" }
   ]
-
+  const [openEdit, setOpenEdit] = useState(false);
+  const [id, setId] = useState();
   const [userList, setUserList] = useState(data);
 
   function handleForm(user) {
@@ -24,6 +25,25 @@ function App() {
     setUserList((userList) => [...userList, newUser])
   }
 
+  function handleEditform(user) {
+    console.log("the eidted user:", user)
+    setOpenEdit(false);
+    let updatedList = userList.map((u) => {
+      if (u.id === user.id) {
+        return { ...u, name: user.name, role: user.role }
+      }
+      return u;
+    })
+    setUserList(updatedList);
+    console.log("the updated list:", updatedList)
+  }
+
+  function handleEdit(id) {
+    console.log("user to edit from userlist", id);
+    setOpenEdit(true);
+    setId(id);
+  }
+
   useEffect(() => {
     console.log("The list:", userList);
   }, [userList])
@@ -32,9 +52,9 @@ function App() {
   return (
     <>
       <div className='text-black text-center p-10 '>User Managment App</div>
-      <UserList data={userList} />
+      <UserList data={userList} onSubmit={handleEdit} />
       <AddUserForm onSubmit={handleForm} />
-      <EditUserForm />
+      {openEdit && <EditUserForm id={id} onSubmit={handleEditform} />}
     </>
   )
 }
